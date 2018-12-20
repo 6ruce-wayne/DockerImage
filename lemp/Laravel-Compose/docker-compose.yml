@@ -1,0 +1,68 @@
+version: "3"
+services:
+  
+  web:
+    image: "hitalos/laravel"
+    ports:
+      - "80:80"
+    container_name: WebServerLaravel
+    volumes:
+      - ./html:/var/www/html
+    networks:
+      - frontend
+    environment:
+        DB_HOST: db
+        DB_DATABASE: db_web
+        DB_USERNAME: root
+        DB_PASSWORD: romn2011.
+    deploy:
+      mode: replicated
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  db:
+    image: "mariadb:latest"
+    ports:
+        - "3277:3277"
+        - "3306:3306"
+    container_name: DBServerLaravel
+    environment:
+      - MYSQL_ROOT_PASSWORD=romn2011.
+      - MYSQL_DATABASE=db_web
+    networks:
+      - frontend
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    container_name: RDMSLaravel
+    networks:
+      - frontend
+    deploy:
+     replicas: 4
+     update_config:
+       parallelism: 2
+       delay: 10s
+     restart_policy:
+      condition: on-failure
+
+
+networks:
+  frontend:
+  backend:
+
+
+    
