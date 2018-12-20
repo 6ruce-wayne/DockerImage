@@ -2,7 +2,7 @@ version: "3"
 services:
   
   php:
-    image: "phpa:latest"
+    image: "rmninthailand/phpa:1.0"
     ports:
       - "80:80"
     container_name: lemp_php2_apache
